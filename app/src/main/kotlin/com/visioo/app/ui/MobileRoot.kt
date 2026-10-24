@@ -30,7 +30,7 @@ import com.visioo.core.designsystem.VisiooColors
 import com.visioo.core.designsystem.VisiooSpacing
 
 @Composable
-fun MobileRoot() {
+fun MobileRoot(actions: MainActions) {
     val navController = rememberNavController()
     val backStack by navController.currentBackStackEntryAsState()
     val currentRoute = backStack?.destination?.route
@@ -56,7 +56,7 @@ fun MobileRoot() {
                 )
             }
         }
-        VisiooNavHost(navController, isTv = false, modifier = Modifier.weight(1f))
+        VisiooNavHost(navController, isTv = false, actions = actions, modifier = Modifier.weight(1f))
         NavigationBar(containerColor = VisiooColors.Surface) {
             Destination.Mobile.forEach { destination ->
                 NavigationBarItem(

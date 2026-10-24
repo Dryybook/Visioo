@@ -1,6 +1,5 @@
 package com.visioo.app.feature.home
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -25,7 +24,7 @@ import com.visioo.core.designsystem.MessageState
 import com.visioo.core.designsystem.PosterCard
 import com.visioo.core.designsystem.VisiooColors
 import com.visioo.core.designsystem.VisiooSpacing
-import com.visioo.core.network.ApiError
+import com.visioo.app.ui.messageRes
 
 @Composable
 fun HomeScreen(
@@ -93,15 +92,4 @@ private fun HomeSections(
             }
         }
     }
-}
-
-@StringRes
-private fun ApiError.messageRes(): Int = when (this) {
-    ApiError.Network -> R.string.error_network
-    ApiError.Unauthorized -> R.string.error_unauthorized
-    ApiError.Forbidden -> R.string.error_forbidden
-    ApiError.NotFound -> R.string.error_not_found
-    ApiError.RateLimited -> R.string.error_rate_limited
-    ApiError.Server -> R.string.error_server
-    ApiError.Unknown -> R.string.error_unknown
 }

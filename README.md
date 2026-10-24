@@ -16,6 +16,7 @@ VISIOO ne diffuse que des sources que l'éditeur est autorisé à distribuer. Au
 - [x] Phase 0 : dépôt, spec, tokens, planche de design
 - [x] Phase 1 : squelette Android (Gradle, thème, navigation mobile + TV, client API, écran d'accueil branché sur `GET /home`)
 - [x] Phase 2 : backend (`backend/` : auth, profils, appareils, clés VIP, catalogue, lecture signée, admin de base). Restent : récupération 12 mots, Google, MFA admin, CMS contenu (voir `backend/README.md`)
+- [x] Phase 3 : authentification Android (démarrage, onboarding, connexion, inscription, Google, phrase de récupération 12 mots, activation de clé VIP, choix du profil, stockage Keystore, rafraîchissement automatique des jetons). Non testée sur appareil.
 - [ ] Phases suivantes : voir la section 57 de la spec
 
 ## Développer
@@ -35,4 +36,9 @@ L'URL de l'API se règle avec `-Pvisioo.apiBaseUrl=...` (debug, défaut `http://
 - `core/designsystem/` : tokens, thème, focus TV, composants communs.
 - `core/network/` : Retrofit/OkHttp, DTO, mapping d'erreurs, tests.
 
-Les destinations hors accueil affichent « Bientôt disponible » jusqu'à leur phase. Sans backend, l'accueil affiche l'état d'erreur réseau.
+Les destinations hors accueil et profil affichent « Bientôt disponible » jusqu'à leur phase. Sans backend, l'inscription et la connexion échouent avec un message réseau.
+
+### Réglages optionnels (propriétés Gradle)
+
+- `-Pvisioo.googleWebClientId=...` : client web Google. Vide, le bouton Google est masqué. Le même identifiant doit être dans `GOOGLE_CLIENT_ID` côté backend. Le bouton n'apparaît pas sur Android TV.
+- `-Pvisioo.termsUrl=...` et `-Pvisioo.privacyUrl=...` : réservés aux liens légaux, pas encore affichés.

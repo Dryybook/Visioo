@@ -22,4 +22,5 @@ dependencies {
     implementation(libs.retrofit.serialization)
 
     testImplementation(libs.junit)
+    testImplementation(libs.okhttp.mockwebserver)
 }

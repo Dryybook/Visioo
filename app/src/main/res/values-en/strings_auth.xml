@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_title">Stories without limits</string>
+    <string name="onboarding_subtitle">Movies, series, anime, documentaries and more.</string>
+    <string name="onboarding_start">Get started</string>
+    <string name="onboarding_have_account">Already have an account?</string>
+
+    <string name="login_title">Sign in</string>
+    <string name="login_subtitle">Step into a world of entertainment.</string>
+    <string name="login_google">Continue with Google</string>
+    <string name="login_or">or</string>
+    <string name="login_submit">Sign in</string>
+    <string name="login_forgot">Forgot password?</string>
+    <string name="login_no_account">No account yet?</string>
+    <string name="login_register">Sign up</string>
+
+    <string name="register_title">Create an account</string>
+    <string name="register_subtitle">Join VISIOO and enjoy your favorite content.</string>
+    <string name="register_submit">Create my account</string>
+    <string name="register_terms">I accept the terms of use and the privacy policy</string>
+    <string name="terms_link">Terms of use</string>
+    <string name="privacy_link">Privacy policy</string>
+
+    <string name="field_name">Full name</string>
+    <string name="field_email">Email</string>
+    <string name="field_password">Password</string>
+    <string name="field_new_password">New password</string>
+    <string name="field_password_hint">At least 8 characters</string>
+    <string name="password_show">Show</string>
+    <string name="password_hide">Hide</string>
+    <string name="validation_email">Invalid email address.</string>
+    <string name="validation_password">At least 8 characters.</string>
+    <string name="validation_name">Enter a name.</string>
+    <string name="validation_terms">You must accept the terms.</string>
+    <string name="action_back">Back</string>
+    <string name="action_skip">Skip for now</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+
+    <string name="recover_title">Recover my account</string>
+    <string name="recover_subtitle">Enter your email, your 12 words and a new password.</string>
+    <string name="recover_phrase">Recovery phrase (12 words)</string>
+    <string name="recover_submit">Reset my password</string>
+
+    <string name="recovery_title">Recovery phrase</string>
+    <string name="recovery_subtitle">Write these 12 words down in order. They let you get your account back.</string>
+    <string name="recovery_warning">Keep these words somewhere safe and share them with no one. They will not be shown again.</string>
+    <string name="recovery_noted">I have written my phrase down</string>
+    <string name="recovery_confirm_title">Verification</string>
+    <string name="recovery_confirm_subtitle">Enter the requested words to confirm.</string>
+    <string name="recovery_word_n">Word #%1$d</string>
+    <string name="recovery_confirm_submit">Confirm</string>
+    <string name="recovery_confirm_wrong">One of the words is wrong. Check your phrase.</string>
+    <string name="recovery_show_again">Show my phrase again</string>
+    <string name="recovery_create">Create my recovery phrase</string>
+    <string name="recovery_replace">Generate a new phrase</string>
+
+    <string name="vip_title">Activate a VIP key</string>
+    <string name="vip_subtitle">Enter your VIP key to unlock all premium content.</string>
+    <string name="vip_key_hint">VSOO-XXXX-XXXX-XXXX</string>
+    <string name="vip_activate">Activate key</string>
+    <string name="vip_success">Your VIP access is active.</string>
+    <string name="vip_status_active">VIP active until %1$s</string>
+    <string name="vip_status_inactive">No VIP access</string>
+    <string name="vip_extend">Add a VIP key</string>
+
+    <string name="profiles_title">Who is watching?</string>
+    <string name="profiles_add">Add</string>
+    <string name="profiles_manage">Manage profiles</string>
+    <string name="profiles_done">Done</string>
+    <string name="profile_child">Kid</string>
+    <string name="profile_new">New profile</string>
+    <string name="profile_edit">Edit profile</string>
+    <string name="profile_name">Profile name</string>
+    <string name="profile_is_child">Kids profile</string>
+
+    <string name="account_title">My account</string>
+    <string name="account_switch_profile">Switch profile</string>
+    <string name="account_logout">Sign out</string>
+    <string name="google_unavailable">Google sign-in is unavailable on this device.</string>
+
+    <string name="error_invalid_credentials">Incorrect email or password.</string>
+    <string name="error_email_taken">An account already exists with this email.</string>
+    <string name="error_device_limit">Device limit reached. Remove a device from another signed-in device.</string>
+    <string name="error_invalid_key">Invalid key. Check what you typed.</string>
+    <string name="error_key_used">This key has already been used.</string>
+    <string name="error_key_expired">This key has expired.</string>
+    <string name="error_key_revoked">This key has been deactivated.</string>
+    <string name="error_invalid_recovery">Incorrect email or recovery phrase.</string>
+    <string name="error_google">Google sign-in failed.</string>
+    <string name="error_profile_limit">Maximum number of profiles reached.</string>
+    <string name="error_last_profile">At least one profile is required.</string>
+</resources>

@@ -29,3 +29,18 @@ class ApiErrorTest {
         assertTrue(safeApiCall { 1 }.isSuccess)
     }
 }
+
+class ServerErrorCodeTest {
+    @Test fun readsTheCodeFromTheErrorBody() = runBlocking {
+        val body = """{"error":{"code":"KEY_EXPIRED","message":"x"}}""".toResponseBody()
+        val result = safeApiCall<Unit> { throw HttpException(Response.error<Any>(403, body)) }
+        val e = result.exceptionOrNull() as ApiException
+        assertEquals(ApiError.Forbidden, e.error)
+        assertEquals("KEY_EXPIRED", e.code)
+    }
+
+    @Test fun toleratesBodiesWithoutACode() = runBlocking {
+        val result = safeApiCall<Unit> { throw HttpException(Response.error<Any>(500, "oops".toResponseBody())) }
+        assertEquals(null, (result.exceptionOrNull() as ApiException).code)
+    }
+}

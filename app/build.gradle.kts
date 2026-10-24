@@ -6,6 +6,9 @@ plugins {
 
 val apiBaseUrl = providers.gradleProperty("visioo.apiBaseUrl")
     .orElse("http://10.0.2.2:3000/api/v1/")
+val googleWebClientId = providers.gradleProperty("visioo.googleWebClientId").orElse("")
+val termsUrl = providers.gradleProperty("visioo.termsUrl").orElse("")
+val privacyUrl = providers.gradleProperty("visioo.privacyUrl").orElse("")
 val apiBaseUrlRelease = providers.gradleProperty("visioo.apiBaseUrl.release")
     .orElse("https://api.example.com/api/v1/")
 
@@ -19,6 +22,12 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "0.1.0"
+    }
+
+    defaultConfig {
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"${googleWebClientId.get()}\"")
+        buildConfigField("String", "TERMS_URL", "\"${termsUrl.get()}\"")
+        buildConfigField("String", "PRIVACY_URL", "\"${privacyUrl.get()}\"")
     }
 
     buildTypes {
@@ -58,6 +67,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play)
+    implementation(libs.googleid)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

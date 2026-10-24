@@ -9,8 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
-import com.visioo.app.ui.MobileRoot
-import com.visioo.app.ui.TvRoot
+import com.visioo.app.ui.VisiooApp
 import com.visioo.core.designsystem.VisiooTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +20,7 @@ class MainActivity : ComponentActivity() {
             val context = LocalContext.current
             val isTv = remember { context.isTelevision() }
             VisiooTheme(isTv = isTv) {
-                if (isTv) TvRoot() else MobileRoot()
+                VisiooApp(isTv)
             }
         }
     }

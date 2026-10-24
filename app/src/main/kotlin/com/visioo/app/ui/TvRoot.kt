@@ -31,7 +31,7 @@ import com.visioo.core.designsystem.VisiooSpacing
 import com.visioo.core.designsystem.visiooFocus
 
 @Composable
-fun TvRoot() {
+fun TvRoot(actions: MainActions) {
     val navController = rememberNavController()
     val backStack by navController.currentBackStackEntryAsState()
     val currentRoute = backStack?.destination?.route
@@ -72,6 +72,6 @@ fun TvRoot() {
                 }
             }
         }
-        VisiooNavHost(navController, isTv = true, modifier = Modifier.weight(1f))
+        VisiooNavHost(navController, isTv = true, actions = actions, modifier = Modifier.weight(1f))
     }
 }
