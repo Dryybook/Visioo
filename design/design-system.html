@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VISIOO Design System</title>
+<style>
+:root{
+  --black:#050507;--deep:#09090D;--surface:#111117;--elev:#171720;
+  --violet:#7C3AED;--bright:#9B5CFF;--soft:#B88CFF;
+  --text:#fff;--text2:#A7A7B2;--muted:#6F6F7A;
+  --ok:#39D98A;--warn:#F5B942;--err:#FF5C68;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--black);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.5}
+main{max-width:1100px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:36px;margin:0 0 4px}
+h2{font-size:20px;margin:48px 0 16px;color:var(--soft);font-weight:600}
+p.sub{color:var(--text2);margin:0}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.sw{border-radius:12px;overflow:hidden;background:var(--surface);border:1px solid #1d1d27}
+.sw i{display:block;height:64px}
+.sw span{display:block;padding:8px 10px;font-size:12px;color:var(--text2)}
+.sw b{display:block;color:var(--text);font-size:13px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{border:0;border-radius:10px;padding:12px 22px;font:600 15px Inter,system-ui;color:#fff;background:var(--violet);cursor:pointer;transition:transform .16s,box-shadow .16s}
+.btn.sec{background:var(--elev)}
+.btn:hover,.btn:focus-visible{transform:scale(1.04);box-shadow:0 0 0 3px var(--bright),0 8px 28px #7c3aed66;outline:0}
+.rows{display:flex;gap:14px;overflow-x:auto;padding:8px 4px 16px}
+.poster{flex:0 0 130px;aspect-ratio:2/3;border-radius:12px;background:linear-gradient(160deg,#2a1a52,#0d0d14);transition:transform .16s,box-shadow .16s;position:relative}
+.poster.land{flex-basis:240px;aspect-ratio:16/9}
+.poster:hover,.poster:focus-visible,.poster.focus{transform:scale(1.04);box-shadow:0 0 0 3px var(--bright),0 10px 30px #7c3aed55;outline:0}
+.poster em{position:absolute;top:8px;left:8px;font-style:normal;font-size:10px;font-weight:700;background:var(--violet);padding:2px 7px;border-radius:99px}
+.poster .bar{position:absolute;left:10px;right:10px;bottom:10px;height:3px;background:#ffffff33;border-radius:2px}
+.poster .bar::after{content:"";position:absolute;inset:0 40% 0 0;background:var(--violet);border-radius:2px}
+.frames{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.phone{width:280px;height:580px;border-radius:28px;background:var(--deep);border:1px solid #23232f;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.hero{height:250px;background:linear-gradient(180deg,#3b1d7a55,var(--deep)),linear-gradient(135deg,#4c1d95,#09090D);padding:16px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+.hero h3{margin:0;font-size:28px}
+.hero small{color:var(--text2)}
+.phone .body{padding:12px 14px;flex:1;overflow:hidden}
+.phone h4{margin:6px 0 8px;font-size:15px}
+.nav{display:flex;justify-content:space-around;padding:10px 0;background:var(--surface);font-size:11px;color:var(--muted)}
+.nav .on{color:var(--bright);font-weight:700}
+.tv{flex:1 1 640px;aspect-ratio:16/9;border-radius:14px;background:var(--deep);border:1px solid #23232f;display:flex;overflow:hidden;min-width:300px}
+.rail{width:64px;background:var(--surface);display:flex;flex-direction:column;gap:18px;align-items:center;padding-top:20px;font-size:18px;color:var(--muted)}
+.rail .on{color:var(--bright)}
+.tvmain{flex:1;display:flex;flex-direction:column}
+.tvhero{flex:1.3;background:linear-gradient(90deg,var(--deep) 25%,transparent),linear-gradient(135deg,#4c1d95,#09090D);padding:5% 6%;display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
+.tvhero h3{margin:0;font-size:clamp(22px,4vw,52px)}
+.tvrows{flex:1;padding:0 6%}
+.tvrows .rows{padding-top:4px}
+.tvrows .poster.land{flex-basis:18%}
+.player{margin-top:24px;aspect-ratio:16/9;border-radius:14px;background:radial-gradient(circle at 50% 40%,#2a1a52,#000);position:relative;overflow:hidden}
+.player .ctl{position:absolute;inset:auto 0 0 0;padding:20px 24px;background:linear-gradient(transparent,#000d)}
+.tl{height:5px;background:#ffffff30;border-radius:3px;position:relative;margin:12px 0}
+.tl::before{content:"";position:absolute;inset:0 55% 0 0;background:var(--violet);border-radius:3px}
+.tl::after{content:"";position:absolute;left:45%;top:-4px;width:13px;height:13px;border-radius:50%;background:var(--bright)}
+.ctlrow{display:flex;gap:28px;justify-content:center;font-size:15px;color:var(--text2)}
+.ctlrow .big{color:#fff;font-size:22px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{padding:6px 14px;border-radius:99px;background:var(--elev);font-size:13px;color:var(--text2)}
+.chip.on{background:var(--violet);color:#fff}
+.form{max-width:340px;background:var(--surface);border-radius:16px;padding:20px;display:grid;gap:12px}
+.form input{background:var(--elev);border:1px solid #2a2a38;border-radius:10px;padding:12px;color:#fff;font:600 16px monospace;letter-spacing:2px;text-align:center}
+.form input:focus{outline:0;border-color:var(--bright);box-shadow:0 0 0 3px #7c3aed55}
+.msg{font-size:13px;color:var(--err)}
+</style>
+</head>
+<body>
+<main>
+  <h1>VISIOO</h1>
+  <p class="sub">Design system v0.1 : noir profond + violet, cinématique et minimal</p>
+
+  <h2>Palette</h2>
+  <div class="swatches">
+    <div class="sw"><i style="background:#050507"></i><span><b>Black</b>#050507</span></div>
+    <div class="sw"><i style="background:#09090D"></i><span><b>Deep Black</b>#09090D</span></div>
+    <div class="sw"><i style="background:#111117"></i><span><b>Surface</b>#111117</span></div>
+    <div class="sw"><i style="background:#171720"></i><span><b>Elevated</b>#171720</span></div>
+    <div class="sw"><i style="background:#7C3AED"></i><span><b>Violet</b>#7C3AED</span></div>
+    <div class="sw"><i style="background:#9B5CFF"></i><span><b>Bright Violet</b>#9B5CFF</span></div>
+    <div class="sw"><i style="background:#B88CFF"></i><span><b>Soft Violet</b>#B88CFF</span></div>
+    <div class="sw"><i style="background:#A7A7B2"></i><span><b>Text 2</b>#A7A7B2</span></div>
+    <div class="sw"><i style="background:#39D98A"></i><span><b>Success</b>#39D98A</span></div>
+    <div class="sw"><i style="background:#F5B942"></i><span><b>Warning</b>#F5B942</span></div>
+    <div class="sw"><i style="background:#FF5C68"></i><span><b>Error</b>#FF5C68</span></div>
+  </div>
+
+  <h2>Boutons et focus (survolez ou naviguez avec Tab)</h2>
+  <div class="btns">
+    <button class="btn">▶ Regarder</button>
+    <button class="btn sec">+ Ma liste</button>
+    <button class="btn sec">Activer une clé</button>
+  </div>
+
+  <h2>Cartes : poster 2:3, paysage 16:9, badge VIP, progression</h2>
+  <div class="rows">
+    <div class="poster" tabindex="0"><em>VIP</em></div>
+    <div class="poster focus" tabindex="0"></div>
+    <div class="poster" tabindex="0"></div>
+    <div class="poster land" tabindex="0"><div class="bar"></div></div>
+    <div class="poster land" tabindex="0"><div class="bar"></div></div>
+  </div>
+
+  <h2>Mobile : Accueil</h2>
+  <div class="frames">
+    <div class="phone">
+      <div class="hero"><small>VIP · 2024 · 1h58</small><h3>Titre du film</h3><div class="btns"><button class="btn" style="padding:8px 16px">▶ Regarder</button><button class="btn sec" style="padding:8px 16px">+</button></div></div>
+      <div class="body"><h4>Continuer à regarder</h4><div class="rows"><div class="poster land" style="flex-basis:150px"><div class="bar"></div></div><div class="poster land" style="flex-basis:150px"><div class="bar"></div></div></div><h4>Films populaires</h4><div class="rows"><div class="poster" style="flex-basis:90px"></div><div class="poster" style="flex-basis:90px"></div><div class="poster" style="flex-basis:90px"></div></div></div>
+      <div class="nav"><span class="on">Accueil</span><span>Explorer</span><span>Recherche</span><span>Ma liste</span><span>Profil</span></div>
+    </div>
+
+    <div class="phone" style="justify-content:center;align-items:center;padding:20px">
+      <div class="form" style="width:100%">
+        <b style="font-size:18px">Activer ma clé VIP</b>
+        <span style="color:var(--text2);font-size:13px">Saisissez la clé reçue pour débloquer le catalogue premium.</span>
+        <input value="VSOO-8K7M-QP4X-2L9D" aria-label="Clé VIP">
+        <button class="btn">Activer</button>
+        <span class="msg">Clé invalide ou déjà utilisée.</span>
+      </div>
+    </div>
+  </div>
+
+  <h2>TV : Accueil (rail latéral, focus visible)</h2>
+  <div class="tv">
+    <div class="rail"><span class="on">⌂</span><span>▭</span><span>▤</span><span>⌕</span><span>＋</span><span>☺</span><span>⚙</span></div>
+    <div class="tvmain">
+      <div class="tvhero"><small style="color:var(--text2)">VIP · Action · 2025</small><h3>Titre du film</h3><div class="btns"><button class="btn">▶ Regarder</button><button class="btn sec">Ma liste</button></div></div>
+      <div class="tvrows"><h4 style="margin:8px 0 0">Continuer à regarder</h4><div class="rows"><div class="poster land focus"><div class="bar"></div></div><div class="poster land"><div class="bar"></div></div><div class="poster land"><div class="bar"></div></div><div class="poster land"></div></div></div>
+    </div>
+  </div>
+
+  <h2>Player TV</h2>
+  <div class="player">
+    <div class="ctl">
+      <b style="font-size:20px">Titre · S1 E3</b>
+      <div class="tl"></div>
+      <div class="ctlrow"><span>−10</span><span class="big">⏸</span><span>+10</span></div>
+      <div class="ctlrow" style="margin-top:12px"><span class="chip on">Audio VF</span><span class="chip">Sous-titres FR</span><span class="chip">Qualité Auto</span><span class="chip">Épisodes</span></div>
+    </div>
+  </div>
+
+  <h2>Mouvement</h2>
+  <div class="chips"><span class="chip">Micro 140 ms</span><span class="chip">Standard 220 ms</span><span class="chip">Modal 280 ms</span><span class="chip">Hero 450 ms</span><span class="chip on">Focus 160 ms · ×1.04</span></div>
+</main>
+</body>
+</html>
