@@ -15,7 +15,7 @@ VISIOO ne diffuse que des sources que l'éditeur est autorisé à distribuer. Au
 
 - [x] Phase 0 : dépôt, spec, tokens, planche de design
 - [x] Phase 1 : squelette Android (Gradle, thème, navigation mobile + TV, client API, écran d'accueil branché sur `GET /home`)
-- [ ] Phase 2 : backend (auth, profils, clés VIP, catalogue, lecture)
+- [x] Phase 2 : backend (`backend/` : auth, profils, appareils, clés VIP, catalogue, lecture signée, admin de base). Restent : récupération 12 mots, Google, MFA admin, CMS contenu (voir `backend/README.md`)
 - [ ] Phases suivantes : voir la section 57 de la spec
 
 ## Développer

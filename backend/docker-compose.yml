@@ -1,0 +1,27 @@
+# Local development: PostgreSQL + Redis, and the API built from this folder.
+# Secrets below are for local use only. Copy .env.example for anything shared.
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: visioo
+      POSTGRES_PASSWORD: visioo
+      POSTGRES_DB: visioo
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]
+  api:
+    build: .
+    depends_on: [postgres, redis]
+    ports: ["3000:3000"]
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgres://visioo:visioo@postgres:5432/visioo
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: local-dev-jwt-secret-local-dev-jwt-secret
+      VIP_KEY_PEPPER: local-dev-pepper-local-dev-pepper-1234
+      PLAYBACK_SIGNING_SECRET: local-dev-signing-local-dev-signing-1
+volumes:
+  pgdata:
