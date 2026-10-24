@@ -37,6 +37,11 @@ export async function adminRoutes(app: FastifyInstance, deps: Deps) {
     return { accessToken: await signAccessToken(config, { sub: row.id, kind: 'admin', role: row.role }), role: row.role };
   });
 
+  app.get('/admin/vip/plans', { preHandler: support }, async () => {
+    const { rows } = await db.query('select id, name, duration_days, device_limit from vip_plans order by duration_days');
+    return { plans: rows.map((r) => ({ id: r.id, name: r.name, durationDays: r.duration_days, deviceLimit: r.device_limit })) };
+  });
+
   app.post('/admin/vip/keys', { preHandler: keyAdmins }, async (req, reply) => {
     const b = generateBody.parse(req.body);
     const adminId = req.admin!.id;

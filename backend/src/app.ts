@@ -3,6 +3,7 @@ import { ZodError } from 'zod';
 import type { Deps } from './context.js';
 import { AppError } from './errors.js';
 import { adminRoutes } from './routes/admin.js';
+import { adminUiRoutes } from './routes/adminUi.js';
 import { authRoutes } from './routes/auth.js';
 import { catalogRoutes } from './routes/catalog.js';
 import { deviceRoutes } from './routes/devices.js';
@@ -32,6 +33,8 @@ export function buildApp(deps: Deps): FastifyInstance {
     req.log.error({ err }, 'unhandled error');
     return reply.status(500).send({ error: { code: 'INTERNAL', message: 'Internal error' } });
   });
+
+  app.register(adminUiRoutes);
 
   app.get('/health', async () => ({ status: 'ok' }));
 

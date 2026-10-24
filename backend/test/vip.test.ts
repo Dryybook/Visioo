@@ -15,7 +15,7 @@ describe('vip activation', () => {
     const [key] = await generateKeys(t, admin);
     const res = await activate(auth, key!.toLowerCase());
     expect(res.statusCode).toBe(200);
-    expect(res.json()).toMatchObject({ active: true, planId: 'vip_30d', deviceLimit: 2 });
+    expect(res.json()).toMatchObject({ active: true, planId: 'vip_1y', deviceLimit: 2 });
     expect((await t.app.inject({ method: 'GET', url: '/api/v1/vip', headers: auth })).json().active).toBe(true);
   });
 
@@ -66,15 +66,15 @@ describe('vip activation', () => {
     expect((await activate(auth, revoked!)).json().error.code).toBe('KEY_REVOKED');
   });
 
-  it('stacks a second key after the running entitlement', async () => {
+  it('stacks a second 1-year key after the running entitlement', async () => {
     const { auth } = await register(t);
     const keys = await generateKeys(t, admin, { quantity: 2 });
     await activate(auth, keys[0]!);
     await activate(auth, keys[1]!);
     const vip = (await t.app.inject({ method: 'GET', url: '/api/v1/vip', headers: auth })).json();
     const days = (new Date(vip.endsAt).getTime() - Date.now()) / 86_400_000;
-    expect(days).toBeGreaterThan(59);
-    expect(days).toBeLessThan(61);
+    expect(days).toBeGreaterThan(729);
+    expect(days).toBeLessThan(731);
   });
 
   it('rate limits activation attempts', async () => {
@@ -98,7 +98,7 @@ describe('vip activation', () => {
 describe('admin', () => {
   it('rejects user tokens, anonymous calls and insufficient roles', async () => {
     const { auth } = await register(t);
-    const call = (headers: Record<string, string>) => t.app.inject({ method: 'POST', url: '/api/v1/admin/vip/keys', headers, payload: { planId: 'vip_30d', quantity: 1 } });
+    const call = (headers: Record<string, string>) => t.app.inject({ method: 'POST', url: '/api/v1/admin/vip/keys', headers, payload: { planId: 'vip_1y', quantity: 1 } });
     expect((await call({})).statusCode).toBe(401);
     expect((await call(auth)).statusCode).toBe(401);
     expect((await call(await adminAuth(t, 'SUPPORT'))).statusCode).toBe(403);
@@ -106,7 +106,7 @@ describe('admin', () => {
   });
 
   it('exports generated keys as CSV and audits the action', async () => {
-    const res = await t.app.inject({ method: 'POST', url: '/api/v1/admin/vip/keys', headers: admin, payload: { planId: 'vip_30d', quantity: 3, deviceLimit: 2, format: 'csv' } });
+    const res = await t.app.inject({ method: 'POST', url: '/api/v1/admin/vip/keys', headers: admin, payload: { planId: 'vip_1y', quantity: 3, deviceLimit: 2, format: 'csv' } });
     expect(res.statusCode).toBe(201);
     expect(res.headers['content-type']).toContain('text/csv');
     const lines = res.body.trim().split('\n');
@@ -133,5 +133,31 @@ describe('admin', () => {
     const id = (await t.db.query('select id from vip_keys')).rows[0].id;
     expect((await t.app.inject({ method: 'POST', url: `/api/v1/admin/vip/keys/${id}/revoke`, headers: admin })).statusCode).toBe(204);
     expect((await t.app.inject({ method: 'GET', url: '/api/v1/vip', headers: auth })).json().active).toBe(false);
+  });
+});
+
+describe('plans', () => {
+  it('offers exactly the 1-year and 2-year plans, and a 2-year key grants 730 days', async () => {
+    const plans = (await t.db.query('select id, duration_days from vip_plans order by duration_days')).rows;
+    expect(plans.map((p) => [p.id, p.duration_days])).toEqual([['vip_1y', 365], ['vip_2y', 730]]);
+
+    const { auth } = await register(t);
+    const [key] = await generateKeys(t, admin, { planId: 'vip_2y' });
+    await activate(auth, key!);
+    const vip = (await t.app.inject({ method: 'GET', url: '/api/v1/vip', headers: auth })).json();
+    expect(vip.planId).toBe('vip_2y');
+    const days = (new Date(vip.endsAt).getTime() - Date.now()) / 86_400_000;
+    expect(days).toBeGreaterThan(729);
+    expect(days).toBeLessThan(731);
+  });
+
+  it('counts the duration from activation, not from generation', async () => {
+    const { auth } = await register(t);
+    const [key] = await generateKeys(t, admin);
+    await t.db.query("update vip_keys set created_at = now() - interval '200 days'");
+    await activate(auth, key!);
+    const vip = (await t.app.inject({ method: 'GET', url: '/api/v1/vip', headers: auth })).json();
+    const days = (new Date(vip.endsAt).getTime() - Date.now()) / 86_400_000;
+    expect(days).toBeGreaterThan(364);
   });
 });

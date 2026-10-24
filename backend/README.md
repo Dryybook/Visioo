@@ -22,6 +22,16 @@ Integration tests need PostgreSQL and Redis. Defaults: `postgres://postgres@127.
 npm test
 ```
 
+## Admin web page
+
+Open `/admin` on the running API (for example `http://localhost:3000/admin`). Sign in with an admin account, then generate VIP keys (1 year or 2 years), download them as CSV, list and cancel keys, and manage users' devices. Admin accounts are created on the server, there is no sign-up:
+
+```bash
+ADMIN_EMAIL=you@example.com ADMIN_PASSWORD='a-long-password' npm run admin:create
+```
+
+The page is plain HTML and JavaScript served by the API (strict CSP, no framework). Admin MFA is not implemented yet: use a long password and serve the API over HTTPS.
+
 ## Endpoints
 
 | Area | Routes |

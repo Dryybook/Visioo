@@ -63,7 +63,7 @@ export async function adminAuth(t: TestApp, role = 'SUPER_ADMIN') {
 export async function generateKeys(t: TestApp, adminHeaders: Record<string, string>, extra: object = {}) {
   const res = await t.app.inject({
     method: 'POST', url: '/api/v1/admin/vip/keys', headers: adminHeaders,
-    payload: { planId: 'vip_30d', quantity: 1, ...extra },
+    payload: { planId: 'vip_1y', quantity: 1, ...extra },
   });
   return res.json().keys as string[];
 }

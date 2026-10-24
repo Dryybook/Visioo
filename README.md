@@ -19,6 +19,7 @@ VISIOO ne diffuse que des sources que l'éditeur est autorisé à distribuer. Au
 - [x] Phase 3 : authentification Android (démarrage, onboarding, connexion, inscription, Google, phrase de récupération 12 mots, activation de clé VIP, choix du profil, stockage Keystore, rafraîchissement automatique des jetons). Non testée sur appareil.
 - [x] Phase 4 : catalogue Android (accueil avec bannière, explorer par type et genre avec pagination, recherche avec debounce, fiches film et série, saisons et épisodes). Non testée sur appareil. Reste : « Ma liste » (Phase 7).
 - [x] Phase 5 : lecteur Media3 (HLS, DASH, MP4), résolution serveur avec URL signée, bascule entre sources, choix de qualité / audio / sous-titres / vitesse, reprise de lecture, épisode suivant, commandes TV, picture-in-picture. Non testé sur appareil ni sur un vrai flux multi-pistes.
+- [x] Formules VIP 1 an / 2 ans et page d'administration web (`/admin`) pour générer, exporter et annuler les clés, gérer les appareils. Testée dans un vrai navigateur.
 - [ ] Phases suivantes : voir la section 57 de la spec
 
 ## Développer
