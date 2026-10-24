@@ -122,7 +122,7 @@ class PlayerViewModel(
 
     private fun refresh(current: PlayerUiState.Ready, positionMs: Long) {
         viewModelScope.launch {
-            playback.resolve(contentType, id).fold(
+            playback.resolve(contentType, id, fresh = true).fold(
                 onSuccess = { sources ->
                     policy = policy.onRefreshed(sources.size)
                     _state.value = current.copy(sources = sources, index = 0, startMs = positionMs, attempt = current.attempt + 1)

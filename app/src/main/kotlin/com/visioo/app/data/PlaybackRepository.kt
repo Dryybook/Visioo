@@ -24,11 +24,34 @@ data class PlayableSource(
 
 data class SavedPosition(val positionMs: Long, val durationMs: Long)
 
-class PlaybackRepository(private val api: VisiooApi, private val appScope: CoroutineScope) {
-    /** The server checks VIP, maturity and source authorization, and returns short-lived signed URLs, best source first. */
-    suspend fun resolve(contentType: String, contentId: String): Result<List<PlayableSource>> = safeApiCall {
-        api.resolve(ResolveRequest(contentType, contentId)).sources.mapNotNull { it.toDomain() }
+class PlaybackRepository(
+    private val api: VisiooApi,
+    private val appScope: CoroutineScope,
+    private val now: () -> Long = System::currentTimeMillis,
+) {
+    private class Cached(val sources: List<PlayableSource>, val at: Long)
+
+    private val cache = java.util.concurrent.ConcurrentHashMap<String, Cached>()
+
+    /**
+     * The server checks VIP, maturity and source authorization, and returns short-lived signed URLs, best source first.
+     * A recent answer is reused so a prefetch makes "Watch" start instantly; [fresh] bypasses it (expired links).
+     * The cache lives shorter than the signed links, so a cached link is never close to expiry.
+     */
+    suspend fun resolve(contentType: String, contentId: String, fresh: Boolean = false): Result<List<PlayableSource>> {
+        val key = "$contentType:$contentId"
+        if (!fresh) cache[key]?.takeIf { now() - it.at < CACHE_TTL_MS }?.let { return Result.success(it.sources) }
+        return safeApiCall {
+            api.resolve(ResolveRequest(contentType, contentId)).sources.mapNotNull { it.toDomain() }
+        }.onSuccess { cache[key] = Cached(it, now()) }.onFailure { cache.remove(key) }
     }
+
+    /** Warms the cache while the user is still on the details page. Failures are ignored: the player will report them. */
+    fun prefetch(contentType: String, contentId: String) {
+        appScope.launch { resolve(contentType, contentId) }
+    }
+
+    fun clearCache() = cache.clear()
 
     suspend fun position(contentType: String, contentId: String): Result<SavedPosition> =
         safeApiCall { api.position(contentType, contentId).let { SavedPosition(it.positionMs, it.durationMs) } }
@@ -41,6 +64,8 @@ class PlaybackRepository(private val api: VisiooApi, private val appScope: Corou
         appScope.launch { safeApiCall { api.saveProgress(ProgressRequest(contentType, contentId, positionMs, durationMs)) } }
     }
 }
+
+const val CACHE_TTL_MS = 5 * 60_000L
 
 internal fun SourceDto.toDomain(): PlayableSource? {
     val t = when (type.uppercase()) {

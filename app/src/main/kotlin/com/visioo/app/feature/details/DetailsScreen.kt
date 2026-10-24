@@ -38,6 +38,7 @@ import com.visioo.app.data.CatalogRepository
 import com.visioo.app.data.ContentDetail
 import com.visioo.app.data.ContentType
 import com.visioo.app.data.Episode
+import com.visioo.app.data.PlaybackRepository
 import com.visioo.app.data.Season
 import com.visioo.app.ui.containerViewModel
 import com.visioo.app.ui.messageRes
@@ -65,7 +66,12 @@ sealed interface DetailsUiState {
     ) : DetailsUiState
 }
 
-class DetailsViewModel(private val repository: CatalogRepository, private val type: ContentType, private val id: String) : ViewModel() {
+class DetailsViewModel(
+    private val repository: CatalogRepository,
+    private val playback: PlaybackRepository,
+    private val type: ContentType,
+    private val id: String,
+) : ViewModel() {
     private val _state = MutableStateFlow<DetailsUiState>(DetailsUiState.Loading)
     val state: StateFlow<DetailsUiState> = _state.asStateFlow()
 
@@ -77,16 +83,20 @@ class DetailsViewModel(private val repository: CatalogRepository, private val ty
             repository.detail(type, id).fold(
                 onSuccess = { detail ->
                     _state.value = DetailsUiState.Ready(detail)
-                    if (type == ContentType.Series) loadSeasons()
+                    // Resolve the stream now so the player starts instantly when the user presses Watch.
+                    if (detail.canPlay && type == ContentType.Movie) playback.prefetch("movie", id)
+                    if (type == ContentType.Series) loadSeasons(prefetch = detail.canPlay)
                 },
                 onFailure = { _state.value = DetailsUiState.Error(it.messageRes()) },
             )
         }
     }
 
-    private suspend fun loadSeasons() {
+    private suspend fun loadSeasons(prefetch: Boolean) {
         repository.seasons(id).fold(
-            onSuccess = { seasons -> _state.update { if (it is DetailsUiState.Ready) it.copy(seasons = seasons, seasonsError = null) else it } },
+            onSuccess = { seasons ->
+                if (prefetch) seasons.firstOrNull { it.episodes.isNotEmpty() }?.episodes?.first()?.let { playback.prefetch("episode", it.id) }
+                _state.update { if (it is DetailsUiState.Ready) it.copy(seasons = seasons, seasonsError = null) else it } },
             onFailure = { e -> _state.update { if (it is DetailsUiState.Ready) it.copy(seasonsError = e.messageRes()) else it } },
         )
     }
@@ -104,7 +114,7 @@ fun DetailsScreen(
     onActivateVip: () -> Unit,
     onBack: () -> Unit,
 ) {
-    val vm = containerViewModel(key = "details-${type.path}-$id") { DetailsViewModel(it.catalogRepository, type, id) }
+    val vm = containerViewModel(key = "details-${type.path}-$id") { DetailsViewModel(it.catalogRepository, it.playbackRepository, type, id) }
     val state by vm.state.collectAsStateWithLifecycle()
     val edge = if (isTv) VisiooSpacing.Xxl else VisiooSpacing.Md
 
