@@ -1,0 +1,64 @@
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+}
+
+val apiBaseUrl = providers.gradleProperty("visioo.apiBaseUrl")
+    .orElse("http://10.0.2.2:3000/api/v1/")
+val apiBaseUrlRelease = providers.gradleProperty("visioo.apiBaseUrl.release")
+    .orElse("https://api.example.com/api/v1/")
+
+android {
+    namespace = "com.visioo.app"
+    compileSdk = 35
+
+    defaultConfig {
+        applicationId = "com.visioo.app"
+        minSdk = 26
+        targetSdk = 35
+        versionCode = 1
+        versionName = "0.1.0"
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrl.get()}\"")
+            manifestPlaceholders["usesCleartext"] = "true"
+        }
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            buildConfigField("String", "API_BASE_URL", "\"${apiBaseUrlRelease.get()}\"")
+            manifestPlaceholders["usesCleartext"] = "false"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+}
+
+dependencies {
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:network"))
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.coroutines.android)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+}

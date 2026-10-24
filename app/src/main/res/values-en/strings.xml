@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VISIOO</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_movies">Movies</string>
+    <string name="nav_series">Series</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_watchlist">My list</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="action_retry">Retry</string>
+    <string name="coming_soon">Coming soon</string>
+
+    <string name="home_empty">No content available right now.</string>
+    <string name="error_network">Unable to connect. Check your Internet connection.</string>
+    <string name="error_unauthorized">Your session has expired. Please sign in again.</string>
+    <string name="error_forbidden">You do not have access to this content.</string>
+    <string name="error_not_found">Content not found.</string>
+    <string name="error_rate_limited">Too many requests. Try again in a moment.</string>
+    <string name="error_server">The service is temporarily unavailable.</string>
+    <string name="error_unknown">Something went wrong.</string>
+</resources>

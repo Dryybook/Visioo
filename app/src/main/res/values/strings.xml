@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">VISIOO</string>
+
+    <string name="nav_home">Accueil</string>
+    <string name="nav_explore">Explorer</string>
+    <string name="nav_movies">Films</string>
+    <string name="nav_series">Séries</string>
+    <string name="nav_search">Recherche</string>
+    <string name="nav_watchlist">Ma liste</string>
+    <string name="nav_profile">Profil</string>
+    <string name="nav_settings">Paramètres</string>
+
+    <string name="action_retry">Réessayer</string>
+    <string name="coming_soon">Bientôt disponible</string>
+
+    <string name="home_empty">Aucun contenu disponible pour le moment.</string>
+    <string name="error_network">Impossible de se connecter. Vérifiez votre connexion Internet.</string>
+    <string name="error_unauthorized">Votre session a expiré. Reconnectez-vous.</string>
+    <string name="error_forbidden">Vous n’avez pas accès à ce contenu.</string>
+    <string name="error_not_found">Contenu introuvable.</string>
+    <string name="error_rate_limited">Trop de requêtes. Réessayez dans un instant.</string>
+    <string name="error_server">Le service est temporairement indisponible.</string>
+    <string name="error_unknown">Une erreur est survenue.</string>
+</resources>
