@@ -1,6 +1,7 @@
 import { Redis } from 'ioredis';
 import { buildApp } from '../src/app.js';
 import type { Config } from '../src/config.js';
+import type { GoogleVerifier } from '../src/security/google.js';
 import { Db } from '../src/db.js';
 import { hashPassword } from '../src/security/password.js';
 
@@ -24,10 +25,10 @@ const TABLES = [
   'vip_key_activations', 'vip_entitlements', 'vip_keys', 'refresh_tokens', 'devices', 'profiles', 'users',
 ];
 
-export async function createTestApp() {
+export async function createTestApp(opts: { googleVerifier?: GoogleVerifier } = {}) {
   const db = new Db(testConfig.DATABASE_URL);
   const redis = new Redis(testConfig.REDIS_URL);
-  const app = buildApp({ config: testConfig, db, redis });
+  const app = buildApp({ config: testConfig, db, redis, googleVerifier: opts.googleVerifier });
   await app.ready();
   const reset = async () => {
     await db.query(`truncate ${TABLES.join(', ')} restart identity cascade`);

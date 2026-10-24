@@ -11,6 +11,7 @@ const schema = z.object({
   ACCESS_TOKEN_TTL_SEC: z.coerce.number().int().positive().default(900),
   REFRESH_TOKEN_TTL_DAYS: z.coerce.number().int().positive().default(30),
   PLAYBACK_URL_TTL_SEC: z.coerce.number().int().min(300).max(1800).default(900),
+  GOOGLE_CLIENT_ID: z.string().min(1).optional(),
   FREE_DEVICE_LIMIT: z.coerce.number().int().positive().default(2),
 });
 

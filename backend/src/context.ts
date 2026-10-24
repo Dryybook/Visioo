@@ -3,12 +3,15 @@ import type { Redis } from 'ioredis';
 import type { Config } from './config.js';
 import type { Db } from './db.js';
 import { AppError, forbidden, unauthorized } from './errors.js';
+import type { GoogleVerifier } from './security/google.js';
 import { verifyAccessToken } from './security/tokens.js';
 
 export interface Deps {
   config: Config;
   db: Db;
   redis: Redis;
+  /** Absent when Google sign-in is not configured. */
+  googleVerifier?: GoogleVerifier;
 }
 
 export interface AuthUser {
