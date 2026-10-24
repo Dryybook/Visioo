@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_watch">Watch</string>
+    <string name="details_vip_required">Activate my VIP key</string>
+    <string name="details_vip_badge">VIP</string>
+    <string name="details_seasons">Seasons</string>
+    <string name="details_season_n">Season %1$d</string>
+    <string name="details_episode_n">%1$d. %2$s</string>
+    <string name="details_minutes">%1$d min</string>
+    <string name="details_age">%1$d+</string>
+    <string name="details_episodes_empty">No episodes available.</string>
+    <string name="search_hint">Movies, series…</string>
+    <string name="search_idle">Type at least 2 characters.</string>
+    <string name="search_empty">No results for this search.</string>
+    <string name="explore_all">All</string>
+    <string name="player_soon">The player is coming soon.</string>
+    <string name="type_movie">Movie</string>
+    <string name="type_series">Series</string>
+</resources>

@@ -7,9 +7,13 @@ import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 @Serializable
-data class HomeResponseDto(val sections: List<HomeSectionDto> = emptyList())
+data class HomeResponseDto(
+    val hero: List<ContentSummaryDto> = emptyList(),
+    val sections: List<HomeSectionDto> = emptyList(),
+)
 
 @Serializable
 data class HomeSectionDto(
@@ -28,7 +32,71 @@ data class ContentSummaryDto(
     val backdropUrl: String? = null,
     val year: Int? = null,
     val isVip: Boolean = false,
+    val overview: String? = null,
 )
+
+@Serializable data class PagedContentDto(val items: List<ContentSummaryDto> = emptyList(), val limit: Int = 0, val offset: Int = 0)
+@Serializable data class SearchResponseDto(val items: List<ContentSummaryDto> = emptyList())
+@Serializable data class GenreDto(val slug: String, val name: String)
+@Serializable data class GenresResponseDto(val genres: List<GenreDto> = emptyList())
+
+@Serializable
+data class MovieDetailDto(
+    val id: String,
+    val title: String,
+    val originalTitle: String? = null,
+    val overview: String? = null,
+    val posterUrl: String? = null,
+    val backdropUrl: String? = null,
+    val logoUrl: String? = null,
+    val year: Int? = null,
+    val runtimeMin: Int? = null,
+    val rating: Double? = null,
+    val ageRating: Int = 0,
+    val isVip: Boolean = false,
+    val genres: List<GenreDto> = emptyList(),
+    val canPlay: Boolean = true,
+)
+
+@Serializable
+data class SeasonSummaryDto(
+    val id: String,
+    val seasonNumber: Int,
+    val title: String? = null,
+    val posterUrl: String? = null,
+    val episodeCount: Int = 0,
+)
+
+@Serializable
+data class SeriesDetailDto(
+    val id: String,
+    val title: String,
+    val originalTitle: String? = null,
+    val overview: String? = null,
+    val posterUrl: String? = null,
+    val backdropUrl: String? = null,
+    val year: Int? = null,
+    val rating: Double? = null,
+    val ageRating: Int = 0,
+    val isVip: Boolean = false,
+    val genres: List<GenreDto> = emptyList(),
+    val seasons: List<SeasonSummaryDto> = emptyList(),
+    val canPlay: Boolean = true,
+)
+
+@Serializable
+data class EpisodeDto(
+    val id: String,
+    val episodeNumber: Int,
+    val title: String,
+    val overview: String? = null,
+    val thumbnailUrl: String? = null,
+    val runtimeMin: Int? = null,
+    val airDate: String? = null,
+)
+
+@Serializable data class SeasonDto(val id: String, val seasonNumber: Int, val title: String? = null, val episodes: List<EpisodeDto> = emptyList())
+@Serializable data class SeasonsResponseDto(val seasons: List<SeasonDto> = emptyList())
 
 @Serializable
 data class DeviceInfoDto(
@@ -111,4 +179,11 @@ interface VisiooApi {
     @DELETE("profiles/{id}") suspend fun deleteProfile(@Path("id") id: String)
 
     @GET("home") suspend fun home(): HomeResponseDto
+    @GET("genres") suspend fun genres(): GenresResponseDto
+    @GET("movies") suspend fun movies(@Query("limit") limit: Int, @Query("offset") offset: Int, @Query("genre") genre: String?): PagedContentDto
+    @GET("series") suspend fun series(@Query("limit") limit: Int, @Query("offset") offset: Int, @Query("genre") genre: String?): PagedContentDto
+    @GET("movies/{id}") suspend fun movie(@Path("id") id: String): MovieDetailDto
+    @GET("series/{id}") suspend fun seriesDetail(@Path("id") id: String): SeriesDetailDto
+    @GET("series/{id}/seasons") suspend fun seasons(@Path("id") id: String): SeasonsResponseDto
+    @GET("search") suspend fun search(@Query("q") query: String, @Query("limit") limit: Int): SearchResponseDto
 }

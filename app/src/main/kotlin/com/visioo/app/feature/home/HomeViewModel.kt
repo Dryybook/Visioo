@@ -1,13 +1,9 @@
 package com.visioo.app.feature.home
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.visioo.app.VisiooApplication
-import com.visioo.app.data.HomeRepository
-import com.visioo.app.data.HomeSection
+import com.visioo.app.data.CatalogRepository
+import com.visioo.app.data.HomeContent
 import com.visioo.core.network.ApiError
 import com.visioo.core.network.ApiException
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,11 +14,11 @@ import kotlinx.coroutines.launch
 sealed interface HomeUiState {
     data object Loading : HomeUiState
     data object Empty : HomeUiState
-    data class Success(val sections: List<HomeSection>) : HomeUiState
-    data class Error(val error: ApiError) : HomeUiState
+    data class Success(val content: HomeContent) : HomeUiState
+    data class Error(val error: ApiError, val code: String? = null) : HomeUiState
 }
 
-class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
+class HomeViewModel(private val repository: CatalogRepository) : ViewModel() {
     private val _state = MutableStateFlow<HomeUiState>(HomeUiState.Loading)
     val state: StateFlow<HomeUiState> = _state.asStateFlow()
 
@@ -34,20 +30,14 @@ class HomeViewModel(private val repository: HomeRepository) : ViewModel() {
         _state.value = HomeUiState.Loading
         viewModelScope.launch {
             repository.getHome().fold(
-                onSuccess = { sections ->
-                    _state.value = if (sections.isEmpty()) HomeUiState.Empty else HomeUiState.Success(sections)
+                onSuccess = { content ->
+                    _state.value = if (content.hero.isEmpty() && content.sections.isEmpty()) HomeUiState.Empty else HomeUiState.Success(content)
                 },
-                onFailure = { _state.value = HomeUiState.Error((it as? ApiException)?.error ?: ApiError.Unknown) },
+                onFailure = {
+                    val e = it as? ApiException
+                    _state.value = HomeUiState.Error(e?.error ?: ApiError.Unknown, e?.code)
+                },
             )
-        }
-    }
-
-    companion object {
-        val Factory = viewModelFactory {
-            initializer {
-                val app = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as VisiooApplication
-                HomeViewModel(app.container.homeRepository)
-            }
         }
     }
 }

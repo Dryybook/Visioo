@@ -18,6 +18,7 @@ const summary = (type: 'movie' | 'series', r: any) => ({
   backdropUrl: r.backdrop_url,
   year: r.year,
   isVip: r.is_vip,
+  overview: r.overview ?? null,
 });
 
 export async function catalogRoutes(app: FastifyInstance, deps: Deps) {
@@ -30,7 +31,7 @@ export async function catalogRoutes(app: FastifyInstance, deps: Deps) {
       `select s.id as section_id, s.title as section_title, s.layout, i.content_type, i.content_id,
               coalesce(m.title, sr.title) as title, coalesce(m.poster_url, sr.poster_url) as poster_url,
               coalesce(m.backdrop_url, sr.backdrop_url) as backdrop_url, coalesce(m.year, sr.year) as year,
-              coalesce(m.is_vip, sr.is_vip) as is_vip, coalesce(m.age_rating, sr.age_rating) as age_rating
+              coalesce(m.is_vip, sr.is_vip) as is_vip, coalesce(m.age_rating, sr.age_rating) as age_rating, coalesce(m.overview, sr.overview) as overview
        from home_sections s
        join home_section_items i on i.section_id = s.id
        left join movies m on i.content_type = 'movie' and m.id = i.content_id and m.published
@@ -48,7 +49,15 @@ export async function catalogRoutes(app: FastifyInstance, deps: Deps) {
       }
       section.items.push(summary(r.content_type, { ...r, id: r.content_id }));
     }
-    return { sections: [...sections.values()] };
+    // The section with id `hero` feeds the home banner and is not listed as a row.
+    const hero = sections.get('hero');
+    sections.delete('hero');
+    return { hero: hero?.items ?? [], sections: [...sections.values()] };
+  });
+
+  app.get('/genres', pre, async () => {
+    const { rows } = await db.query('select slug, name from genres order by name');
+    return { genres: rows };
   });
 
   for (const [path, table, type] of [['/movies', 'movies', 'movie'], ['/series', 'series', 'series']] as const) {

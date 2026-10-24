@@ -100,6 +100,21 @@ describe('catalog', () => {
     expect(kid.sections[0].items.map((i: { title: string }) => i.title)).toEqual(['Visible']);
   });
 
+  it('serves the hero banner separately from the rows and lists genres', async () => {
+    const { auth } = await register(t);
+    const id = await seedMovie(t, { title: 'Featured' });
+    await t.db.query("update movies set overview = 'A story.' where id = $1", [id]);
+    await t.db.query("insert into home_sections (id, title, layout, position) values ('hero', 'Hero', 'landscape', 0), ('rows', 'Rows', 'poster', 1)");
+    await t.db.query("insert into home_section_items (section_id, content_type, content_id, position) values ('hero', 'movie', $1, 0), ('rows', 'movie', $1, 0)", [id]);
+    await t.db.query("insert into genres (slug, name) values ('action', 'Action'), ('animation', 'Animation')");
+    const home = (await t.app.inject({ method: 'GET', url: '/api/v1/home', headers: auth })).json();
+    expect(home.hero).toHaveLength(1);
+    expect(home.hero[0]).toMatchObject({ title: 'Featured', overview: 'A story.' });
+    expect(home.sections.map((x: { id: string }) => x.id)).toEqual(['rows']);
+    const genres = (await t.app.inject({ method: 'GET', url: '/api/v1/genres', headers: auth })).json().genres;
+    expect(genres.map((g: { slug: string }) => g.slug)).toEqual(['action', 'animation']);
+  });
+
   it('never exposes origin source URLs in movie details', async () => {
     const { auth } = await register(t);
     const id = await seedMovie(t, { sourceUrl: 'https://origin.internal/secret/master.m3u8' });

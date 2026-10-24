@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_watch">Regarder</string>
+    <string name="details_vip_required">Activer ma clé VIP</string>
+    <string name="details_vip_badge">VIP</string>
+    <string name="details_seasons">Saisons</string>
+    <string name="details_season_n">Saison %1$d</string>
+    <string name="details_episode_n">%1$d. %2$s</string>
+    <string name="details_minutes">%1$d min</string>
+    <string name="details_age">%1$d+</string>
+    <string name="details_episodes_empty">Aucun épisode disponible.</string>
+    <string name="search_hint">Films, séries…</string>
+    <string name="search_idle">Saisissez au moins 2 caractères.</string>
+    <string name="search_empty">Aucun résultat pour cette recherche.</string>
+    <string name="explore_all">Tous</string>
+    <string name="player_soon">Le lecteur arrive bientôt.</string>
+    <string name="type_movie">Film</string>
+    <string name="type_series">Série</string>
+</resources>

@@ -127,3 +127,14 @@ fun MessageState(
         }
     }
 }
+
+/** Remote image with the app's cropping default. Keeps Coil an implementation detail of the design system. */
+@Composable
+fun VisiooImage(
+    url: String,
+    contentDescription: String?,
+    modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Crop,
+) {
+    AsyncImage(model = url, contentDescription = contentDescription, contentScale = contentScale, modifier = modifier)
+}

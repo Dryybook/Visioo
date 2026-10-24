@@ -11,8 +11,9 @@ import com.visioo.app.data.AppContainer
 
 /** Creates a ViewModel that gets the app container, without a DI framework. */
 @Composable
-inline fun <reified VM : ViewModel> containerViewModel(crossinline create: (AppContainer) -> VM): VM =
+inline fun <reified VM : ViewModel> containerViewModel(key: String? = null, crossinline create: (AppContainer) -> VM): VM =
     viewModel(
+        key = key,
         factory = viewModelFactory {
             initializer { create((this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as VisiooApplication).container) }
         },

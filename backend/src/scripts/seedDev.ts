@@ -19,7 +19,7 @@ const films = [
 
 await db.tx(async (tx) => {
   await tx.query("insert into genres (slug, name) values ('animation', 'Animation') on conflict do nothing");
-  await tx.query("insert into home_sections (id, title, layout, position) values ('popular_movies', 'Films populaires', 'poster', 1) on conflict do nothing");
+  await tx.query("insert into home_sections (id, title, layout, position) values ('hero', 'À la une', 'landscape', 0), ('popular_movies', 'Films populaires', 'poster', 1) on conflict do nothing");
   let position = 0;
   for (const f of films) {
     const exists = await tx.query('select id from movies where title = $1', [f.title]);
@@ -30,7 +30,11 @@ await db.tx(async (tx) => {
     );
     const id = m.rows[0].id;
     await tx.query("insert into movie_genres select $1, id from genres where slug = 'animation'", [id]);
-    await tx.query("insert into home_section_items (section_id, content_type, content_id, position) values ('popular_movies', 'movie', $1, $2)", [id, position++]);
+    await tx.query("insert into home_section_items (section_id, content_type, content_id, position) values ('popular_movies', 'movie', $1, $2)", [id, position]);
+    if (position === 0) {
+      await tx.query("insert into home_section_items (section_id, content_type, content_id, position) values ('hero', 'movie', $1, 0)", [id]);
+    }
+    position++;
     await tx.query(
       "insert into sources (content_type, content_id, provider, url, type, quality, language, authorized) values ('movie', $1, 'dev-open-content', $2, 'MP4', 720, 'en', true)",
       [id, `${BASE}/${f.file}`],

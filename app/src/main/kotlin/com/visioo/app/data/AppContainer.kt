@@ -30,6 +30,6 @@ class AppContainer(context: Context, isTv: Boolean) {
         }.also { sessionRepo = it }
     }
 
-    val homeRepository: HomeRepository by lazy { RemoteHomeRepository(api) }
+    val catalogRepository: CatalogRepository by lazy { RemoteCatalogRepository(api) }
     val accountRepository: AccountRepository by lazy { AccountRepository(api) }
 }
