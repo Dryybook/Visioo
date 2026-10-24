@@ -19,6 +19,10 @@ fun Throwable.messageRes(): Int {
         "KEY_REVOKED" -> R.string.error_key_revoked
         "INVALID_RECOVERY" -> R.string.error_invalid_recovery
         "INVALID_GOOGLE_TOKEN", "GOOGLE_NOT_CONFIGURED" -> R.string.error_google
+        "VIP_REQUIRED" -> R.string.error_vip_required
+        "VIP_EXPIRED" -> R.string.error_vip_expired
+        "PROFILE_RESTRICTED" -> R.string.error_profile_restricted
+        "NO_SOURCE" -> R.string.error_no_source
         "PROFILE_LIMIT" -> R.string.error_profile_limit
         "LAST_PROFILE" -> R.string.error_last_profile
         else -> e.error.messageRes()

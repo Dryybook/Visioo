@@ -53,6 +53,20 @@ describe('playback', () => {
     expect((await resolve(auth, id)).json().error.code).toBe('VIP_EXPIRED');
   });
 
+  it('signs external subtitle URLs too and tolerates malformed track data', async () => {
+    const { auth } = await register(t);
+    const id = await seedMovie(t);
+    await t.db.query(
+      'update sources set subtitle_tracks = $2 where content_id = $1',
+      [id, JSON.stringify([{ url: 'https://cdn.example.com/subs/fr.vtt', language: 'fr', label: 'Français', format: 'vtt' }, { url: 'not a url' }])],
+    );
+    const tracks = (await resolve(auth, id)).json().sources[0].subtitleTracks;
+    expect(tracks).toHaveLength(1);
+    const u = new URL(tracks[0].url);
+    expect(u.searchParams.get('sig')).toBeTruthy();
+    expect(tracks[0]).toMatchObject({ language: 'fr', format: 'vtt' });
+  });
+
   it('never returns unauthorized sources', async () => {
     const { auth } = await register(t);
     const id = await seedMovie(t, { authorized: false });

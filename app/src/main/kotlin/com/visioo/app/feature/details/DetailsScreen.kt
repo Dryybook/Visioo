@@ -99,7 +99,8 @@ fun DetailsScreen(
     type: ContentType,
     id: String,
     isTv: Boolean,
-    onPlay: (type: ContentType, id: String) -> Unit,
+    onPlayMovie: (String) -> Unit,
+    onPlayEpisode: (String) -> Unit,
     onActivateVip: () -> Unit,
     onBack: () -> Unit,
 ) {
@@ -131,11 +132,13 @@ fun DetailsScreen(
                         }
                         d.overview?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = VisiooColors.TextSecondary, modifier = Modifier.widthIn(max = 640.dp)) }
                         // Rights are decided by the server (`canPlay`); the app never infers VIP state itself.
-                        if (d.canPlay) VisiooButton(stringResource(R.string.action_watch), { onPlay(d.type, d.id) }, Modifier.padding(top = VisiooSpacing.Sm))
+                        val firstEpisode = s.seasons.firstOrNull { it.episodes.isNotEmpty() }?.episodes?.first()
+                        val watch: (() -> Unit)? = if (d.type == ContentType.Movie) ({ onPlayMovie(d.id) }) else firstEpisode?.let { ep -> { onPlayEpisode(ep.id) } }
+                        if (d.canPlay) { if (watch != null) VisiooButton(stringResource(R.string.action_watch), watch, Modifier.padding(top = VisiooSpacing.Sm)) }
                         else VisiooButton(stringResource(R.string.details_vip_required), onActivateVip, Modifier.padding(top = VisiooSpacing.Sm))
                     }
                 }
-                if (d.type == ContentType.Series) seasonsSection(s, edge, onSelect = vm::selectSeason, onEpisode = { onPlay(ContentType.Series, it.id) }, canPlay = d.canPlay)
+                if (d.type == ContentType.Series) seasonsSection(s, edge, onSelect = vm::selectSeason, onEpisode = { onPlayEpisode(it.id) }, canPlay = d.canPlay)
             }
         }
     }

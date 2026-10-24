@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_audio">Audio</string>
+    <string name="player_subtitles">Subtitles</string>
+    <string name="player_quality">Quality</string>
+    <string name="player_speed">Speed</string>
+    <string name="player_next_episode">Next episode</string>
+    <string name="player_off">Off</string>
+    <string name="player_auto">Auto</string>
+    <string name="player_back_10">Back 10 seconds</string>
+    <string name="player_forward_10">Forward 10 seconds</string>
+    <string name="player_play">Play</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_episode_title">%1$s · S%2$d E%3$d</string>
+    <string name="error_playback">Playback failed. Try again in a moment.</string>
+    <string name="error_vip_required">This content is for VIP members.</string>
+    <string name="error_vip_expired">Your VIP access has expired.</string>
+    <string name="error_profile_restricted">This content is not available for this profile.</string>
+    <string name="error_no_source">No source is available for this content.</string>
+</resources>

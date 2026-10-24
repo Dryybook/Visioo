@@ -32,6 +32,7 @@ npm test
 | Devices | `GET /devices`, `DELETE /devices/:id` |
 | Catalog | `GET /home`, `/movies`, `/movies/:id`, `/series`, `/series/:id`, `/series/:id/seasons`, `/episodes/:id`, `/search` |
 | Playback | `POST /playback/resolve` |
+| History | `POST /history/progress`, `GET /history/position` |
 | Admin | `POST /admin/auth/login`, `POST/GET /admin/vip/keys`, `POST /admin/vip/keys/:id/revoke`, `GET /admin/users`, `GET /admin/users/:id/devices`, `DELETE /admin/devices/:id` |
 
 Send `X-Profile-Id` to browse as a specific profile. Maturity limits are enforced by the server for that profile.
@@ -44,6 +45,10 @@ Send `X-Profile-Id` to browse as a specific profile. Maturity limits are enforce
 - Refresh tokens rotate. Presenting a rotated token revokes that device's sessions.
 - Access tokens are rejected as soon as their device is revoked.
 
+## Source data format
+
+`sources.subtitle_tracks` is a JSON array of external subtitle files: `[{ "url": "https://cdn/.../fr.vtt", "language": "fr", "label": "Français", "format": "vtt" }]` (`vtt` or `srt`). They are signed and short-lived like the video. Audio and video tracks come from the stream manifest itself (HLS/DASH).
+
 ## Not implemented yet
 
-12-word recovery (`/auth/recover`), Google sign-in, admin MFA, content management and homepage CMS endpoints, source health checker, `/playback/session` and progress, history and watchlist routes, account deletion and export.
+12-word recovery (`/auth/recover`), Google sign-in, admin MFA, content management and homepage CMS endpoints, source health checker, `/playback/session`, continue-watching list, watchlist routes, skip-intro markers, account deletion and export.

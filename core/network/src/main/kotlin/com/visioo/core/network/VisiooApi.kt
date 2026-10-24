@@ -99,6 +99,38 @@ data class EpisodeDto(
 @Serializable data class SeasonsResponseDto(val seasons: List<SeasonDto> = emptyList())
 
 @Serializable
+data class ResolveRequest(val contentType: String, val contentId: String, val language: String? = null, val preferredQuality: Int? = null)
+
+@Serializable
+data class SubtitleTrackDto(val url: String, val language: String? = null, val label: String? = null, val format: String? = null)
+
+@Serializable
+data class SourceDto(
+    val id: String,
+    val provider: String,
+    val type: String,
+    val quality: Int? = null,
+    val language: String? = null,
+    val url: String,
+    val expiresAt: String? = null,
+    val subtitleTracks: List<SubtitleTrackDto> = emptyList(),
+)
+
+@Serializable data class ResolveResponseDto(val sources: List<SourceDto> = emptyList())
+@Serializable data class ProgressRequest(val contentType: String, val contentId: String, val positionMs: Long, val durationMs: Long)
+@Serializable data class PositionDto(val positionMs: Long = 0, val durationMs: Long = 0)
+
+@Serializable
+data class EpisodeDetailDto(
+    val id: String,
+    val seriesId: String,
+    val seriesTitle: String,
+    val seasonNumber: Int,
+    val episodeNumber: Int,
+    val title: String,
+)
+
+@Serializable
 data class DeviceInfoDto(
     val installationId: String,
     val platform: String,
@@ -177,6 +209,11 @@ interface VisiooApi {
     @POST("profiles") suspend fun createProfile(@Body body: ProfileRequest): ProfileDto
     @PATCH("profiles/{id}") suspend fun updateProfile(@Path("id") id: String, @Body body: ProfileRequest): ProfileDto
     @DELETE("profiles/{id}") suspend fun deleteProfile(@Path("id") id: String)
+
+    @GET("episodes/{id}") suspend fun episode(@Path("id") id: String): EpisodeDetailDto
+    @POST("playback/resolve") suspend fun resolve(@Body body: ResolveRequest): ResolveResponseDto
+    @POST("history/progress") suspend fun saveProgress(@Body body: ProgressRequest)
+    @GET("history/position") suspend fun position(@Query("contentType") contentType: String, @Query("contentId") contentId: String): PositionDto
 
     @GET("home") suspend fun home(): HomeResponseDto
     @GET("genres") suspend fun genres(): GenresResponseDto

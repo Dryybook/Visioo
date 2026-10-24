@@ -14,6 +14,8 @@ import com.visioo.app.data.ContentType
 import com.visioo.app.feature.details.DetailsScreen
 import com.visioo.app.feature.explore.ExploreScreen
 import com.visioo.app.feature.home.HomeScreen
+import com.visioo.app.feature.player.PlayKind
+import com.visioo.app.feature.player.PlayerScreen
 import com.visioo.app.feature.search.SearchScreen
 import com.visioo.app.feature.vip.VipActivationScreen
 import com.visioo.app.ui.ComingSoonScreen
@@ -45,14 +47,29 @@ fun VisiooNavHost(
             if (type != null && id.isNotEmpty()) {
                 DetailsScreen(
                     type = type, id = id, isTv = isTv,
-                    onPlay = { t, i -> navController.navigate("player/${t.path}/$i") },
+                    onPlayMovie = { navController.navigate("player/movie/$it") },
+                    onPlayEpisode = { navController.navigate("player/episode/$it") },
                     onActivateVip = { navController.navigate(ROUTE_VIP) },
                     onBack = { navController.popBackStack() },
                 )
             }
         }
-        // The player arrives in Phase 5.
-        composable("player/{type}/{id}") { ComingSoonScreen(R.string.player_soon) }
+        composable(
+            "player/{kind}/{id}",
+            arguments = listOf(navArgument("kind") { type = NavType.StringType }, navArgument("id") { type = NavType.StringType }),
+        ) { entry ->
+            val kind = PlayKind.fromPath(entry.arguments?.getString("kind").orEmpty())
+            val id = entry.arguments?.getString("id").orEmpty()
+            if (kind != null && id.isNotEmpty()) {
+                PlayerScreen(
+                    kind = kind, id = id, isTv = isTv,
+                    onBack = { navController.popBackStack() },
+                    // Autoplay replaces the finished episode instead of stacking players on the back stack.
+                    onPlayEpisode = { next -> navController.navigate("player/episode/$next") { popUpTo(entry.destination.id) { inclusive = true } } },
+                    onActivateVip = { navController.navigate(ROUTE_VIP) },
+                )
+            }
+        }
         composable(Destination.Profile.route) {
             AccountScreen(
                 onActivateVip = { navController.navigate(ROUTE_VIP) },

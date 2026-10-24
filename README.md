@@ -18,6 +18,7 @@ VISIOO ne diffuse que des sources que l'éditeur est autorisé à distribuer. Au
 - [x] Phase 2 : backend (`backend/` : auth, profils, appareils, clés VIP, catalogue, lecture signée, admin de base). Restent : récupération 12 mots, Google, MFA admin, CMS contenu (voir `backend/README.md`)
 - [x] Phase 3 : authentification Android (démarrage, onboarding, connexion, inscription, Google, phrase de récupération 12 mots, activation de clé VIP, choix du profil, stockage Keystore, rafraîchissement automatique des jetons). Non testée sur appareil.
 - [x] Phase 4 : catalogue Android (accueil avec bannière, explorer par type et genre avec pagination, recherche avec debounce, fiches film et série, saisons et épisodes). Non testée sur appareil. Reste : « Ma liste » (Phase 7).
+- [x] Phase 5 : lecteur Media3 (HLS, DASH, MP4), résolution serveur avec URL signée, bascule entre sources, choix de qualité / audio / sous-titres / vitesse, reprise de lecture, épisode suivant, commandes TV, picture-in-picture. Non testé sur appareil ni sur un vrai flux multi-pistes.
 - [ ] Phases suivantes : voir la section 57 de la spec
 
 ## Développer
@@ -37,7 +38,7 @@ L'URL de l'API se règle avec `-Pvisioo.apiBaseUrl=...` (debug, défaut `http://
 - `core/designsystem/` : tokens, thème, focus TV, composants communs.
 - `core/network/` : Retrofit/OkHttp, DTO, mapping d'erreurs, tests.
 
-« Ma liste » et « Paramètres » affichent « Bientôt disponible » jusqu'à leur phase. Le bouton « Regarder » ouvre un écran provisoire : le lecteur arrive en Phase 5. Sans backend, l'inscription et la connexion échouent avec un message réseau.
+« Ma liste » et « Paramètres » affichent « Bientôt disponible » jusqu'à leur phase. Sans backend, l'inscription et la connexion échouent avec un message réseau.
 
 ### Réglages optionnels (propriétés Gradle)
 

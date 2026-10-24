@@ -55,6 +55,12 @@ android {
         compose = true
         buildConfig = true
     }
+
+    lint {
+        // The Kotlin compiler already enforces Media3's @UnstableApi opt-in (see @file:OptIn in the player files).
+        // Lint's own check only understands androidx.annotation.OptIn, so it would flag that valid opt-in.
+        disable += "UnsafeOptInUsageError"
+    }
 }
 
 dependencies {
@@ -70,6 +76,11 @@ dependencies {
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play)
     implementation(libs.googleid)
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.exoplayer.hls)
+    implementation(libs.media3.exoplayer.dash)
+    implementation(libs.media3.ui)
+    implementation(libs.media3.datasource.okhttp)
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)

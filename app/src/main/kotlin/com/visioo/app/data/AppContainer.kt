@@ -8,6 +8,9 @@ import com.visioo.app.data.session.SessionRepository
 import com.visioo.core.network.DeviceInfoDto
 import com.visioo.core.network.NetworkModule
 import com.visioo.core.network.VisiooApi
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
 class AppContainer(context: Context, isTv: Boolean) {
     private val store = KeystoreSessionStore(context.applicationContext)
@@ -30,6 +33,9 @@ class AppContainer(context: Context, isTv: Boolean) {
         }.also { sessionRepo = it }
     }
 
+    private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    val playbackRepository: PlaybackRepository by lazy { PlaybackRepository(api, appScope) }
     val catalogRepository: CatalogRepository by lazy { RemoteCatalogRepository(api) }
     val accountRepository: AccountRepository by lazy { AccountRepository(api) }
 }

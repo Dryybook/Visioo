@@ -6,6 +6,7 @@ import { adminRoutes } from './routes/admin.js';
 import { authRoutes } from './routes/auth.js';
 import { catalogRoutes } from './routes/catalog.js';
 import { deviceRoutes } from './routes/devices.js';
+import { historyRoutes } from './routes/history.js';
 import { playbackRoutes } from './routes/playback.js';
 import { profileRoutes } from './routes/profiles.js';
 import { vipRoutes } from './routes/vip.js';
@@ -41,6 +42,7 @@ export function buildApp(deps: Deps): FastifyInstance {
     await deviceRoutes(api, deps);
     await catalogRoutes(api, deps);
     await playbackRoutes(api, deps);
+    await historyRoutes(api, deps);
     await adminRoutes(api, deps);
   }, { prefix: '/api/v1' });
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="player_audio">Audio</string>
+    <string name="player_subtitles">Sous-titres</string>
+    <string name="player_quality">Qualité</string>
+    <string name="player_speed">Vitesse</string>
+    <string name="player_next_episode">Épisode suivant</string>
+    <string name="player_off">Désactivés</string>
+    <string name="player_auto">Auto</string>
+    <string name="player_back_10">Reculer de 10 secondes</string>
+    <string name="player_forward_10">Avancer de 10 secondes</string>
+    <string name="player_play">Lecture</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_episode_title">%1$s · S%2$d E%3$d</string>
+    <string name="error_playback">La lecture a échoué. Réessayez dans un instant.</string>
+    <string name="error_vip_required">Ce contenu est réservé aux membres VIP.</string>
+    <string name="error_vip_expired">Votre accès VIP a expiré.</string>
+    <string name="error_profile_restricted">Ce contenu n’est pas disponible pour ce profil.</string>
+    <string name="error_no_source">Aucune source disponible pour ce contenu.</string>
+</resources>

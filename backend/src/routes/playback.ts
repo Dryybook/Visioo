@@ -13,6 +13,19 @@ const body = z.object({
   preferredQuality: z.number().int().min(144).max(4320).optional(),
 });
 
+interface SubtitleTrack { url: string; language?: string; label?: string; format?: string }
+
+function signSubtitles(tracks: unknown, config: Deps['config']): SubtitleTrack[] {
+  if (!Array.isArray(tracks)) return [];
+  return tracks.flatMap((t: SubtitleTrack) => {
+    try {
+      return [{ ...t, url: signPlaybackUrl(config.PLAYBACK_SIGNING_SECRET, t.url, config.PLAYBACK_URL_TTL_SEC).url }];
+    } catch {
+      return [];
+    }
+  });
+}
+
 export async function playbackRoutes(app: FastifyInstance, deps: Deps) {
   const { db, redis, config } = deps;
 
@@ -61,7 +74,8 @@ export async function playbackRoutes(app: FastifyInstance, deps: Deps) {
           url: signed.url,
           expiresAt: signed.expiresAt,
           audioTracks: s.audio_tracks,
-          subtitleTracks: s.subtitle_tracks,
+          // External subtitle files are protected like the video: signed and short-lived.
+          subtitleTracks: signSubtitles(s.subtitle_tracks, config),
         };
       }),
     };
